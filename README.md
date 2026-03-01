@@ -162,14 +162,91 @@ print(report["charts"])
 ## 📈 Development Status
 
 - [x] Project setup and infrastructure
-- [ ] Database schema and models
-- [ ] LLM integration
-- [ ] Query processing engine
-- [ ] Data analysis modules
-- [ ] Visualization generation
-- [ ] Report generation
-- [ ] Alert system
-- [ ] Frontend interface
+- [x] Database schema and models
+- [x] LLM integration  
+- [x] Query processing engine
+- [x] Data analysis modules
+- [x] Visualization generation
+- [x] Report generation
+- [x] Alert system
+- [x] Frontend interface
+- [x] Docker deployment
+- [x] CI/CD pipeline
+
+## 🐳 Docker Deployment
+
+### Using Docker Compose (Recommended)
+
+```bash
+# Set your API keys
+export OPENAI_API_KEY=your-key-here
+
+# Build and start all services
+docker-compose up --build
+
+# Access the application
+open http://localhost:8000
+```
+
+Services included:
+- **Web**: FastAPI backend + React frontend (port 8000)
+- **PostgreSQL**: Database (port 5432)
+- **Redis**: Message broker and cache (port 6379)
+- **Celery Worker**: Background task processing
+- **Celery Beat**: Scheduled task execution
+
+### Manual Docker Build
+
+```bash
+# Build image
+docker build -t ai-business-analyst .
+
+# Run container
+docker run -p 8000:8000 \
+  -e DATABASE_URL=postgresql://user:pass@host/db \
+  -e OPENAI_API_KEY=your-key \
+  ai-business-analyst
+```
+
+## 📡 API Documentation
+
+Once the server is running, visit:
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
+
+### Key Endpoints
+
+**Query Analysis**
+```bash
+POST /api/v1/queries/analyze
+{
+  "natural_language_query": "Show me sales trends for Q4",
+  "data_source_id": "datasource-id"
+}
+```
+
+**Reports**
+```bash
+POST /api/v1/reports/generate
+{
+  "title": "Q4 Sales Report",
+  "query": "Quarterly sales analysis"
+}
+
+GET /api/v1/reports/{report_id}/render
+```
+
+**Alerts**
+```bash
+GET /api/v1/alerts/
+POST /api/v1/alerts/
+{
+  "name": "Low Sales Alert",
+  "condition_sql": "SELECT * FROM sales WHERE amount < 1000",
+  "schedule_cron": "0 9 * * *"
+}
+```
+
 
 ## 🤝 Contributing
 

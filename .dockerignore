@@ -1,0 +1,14 @@
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.venv
+**/venv
+**/node_modules
+**/.git
+**/.gitignore
+**/README.md
+**/.env
+**/dist
+**/.DS_Store
+backend/alembic/versions/*.py
+!backend/alembic/versions/__init__.py

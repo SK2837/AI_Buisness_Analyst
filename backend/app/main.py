@@ -1,68 +1,36 @@
-"""
-Main application entry point for the AI Business Analyst API.
-"""
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-
 from app.core.config import settings
+from app.models import registry  # noqa: F401
+from app.api.v1.endpoints import reports, alerts, queries, data_sources, users, auth
 
-# Initialize FastAPI application
 app = FastAPI(
-    title=settings.APP_NAME,
-    version=settings.APP_VERSION,
-    description="AI-powered Business Analyst for data-driven insights",
-    docs_url="/api/docs",
-    redoc_url="/api/redoc",
-    openapi_url="/api/openapi.json"
+    title=settings.PROJECT_NAME,
+    openapi_url=f"{settings.API_V1_STR}/openapi.json"
 )
 
-# Configure CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_credentials=settings.CORS_ALLOW_CREDENTIALS,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Set all CORS enabled origins
+if settings.BACKEND_CORS_ORIGINS:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
+# Include Routers
+app.include_router(auth.router, prefix=f"{settings.API_V1_STR}/auth", tags=["auth"])
+app.include_router(users.router, prefix=f"{settings.API_V1_STR}/users", tags=["users"])
+app.include_router(data_sources.router, prefix=f"{settings.API_V1_STR}/data_sources", tags=["data_sources"])
+app.include_router(queries.router, prefix=f"{settings.API_V1_STR}/queries", tags=["queries"])
+app.include_router(reports.router, prefix=f"{settings.API_V1_STR}/reports", tags=["reports"])
+app.include_router(alerts.router, prefix=f"{settings.API_V1_STR}/alerts", tags=["alerts"])
 
 @app.get("/")
-async def root():
-    """Root endpoint - API health check."""
-    return {
-        "name": settings.APP_NAME,
-        "version": settings.APP_VERSION,
-        "status": "online",
-        "environment": settings.ENVIRONMENT
-    }
-
+def root():
+    return {"message": "Welcome to AI Business Analyst API"}
 
 @app.get("/health")
-async def health_check():
-    """Health check endpoint for monitoring."""
-    return JSONResponse(
-        status_code=200,
-        content={
-            "status": "healthy",
-            "service": settings.APP_NAME
-        }
-    )
-
-
-# TODO: Add API routers
-# from app.api import queries, reports, data_sources, alerts
-# app.include_router(queries.router, prefix="/api/v1", tags=["queries"])
-# app.include_router(reports.router, prefix="/api/v1", tags=["reports"])
-# app.include_router(data_sources.router, prefix="/api/v1", tags=["data-sources"])
-# app.include_router(alerts.router, prefix="/api/v1", tags=["alerts"])
-
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(
-        "app.main:app",
-        host=settings.API_HOST,
-        port=settings.API_PORT,
-        reload=settings.API_RELOAD
-    )
+def health_check():
+    return {"status": "healthy"}

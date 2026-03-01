@@ -2,7 +2,7 @@
 Application configuration management using Pydantic Settings.
 """
 from typing import Optional, List
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings
 
 
@@ -11,11 +11,13 @@ class Settings(BaseSettings):
     
     # Application
     APP_NAME: str = "AI Business Analyst"
+    PROJECT_NAME: str = "AI Business Analyst"
     APP_VERSION: str = "0.1.0"
     DEBUG: bool = False
     ENVIRONMENT: str = "development"
     
     # API
+    API_V1_STR: str = "/api/v1"
     API_HOST: str = "0.0.0.0"
     API_PORT: int = 8000
     API_RELOAD: bool = True
@@ -24,6 +26,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    ENCRYPTION_KEY: str  # For encrypting data source credentials
     
     # Database
     DATABASE_URL: str
@@ -33,6 +36,7 @@ class Settings(BaseSettings):
     # Redis
     REDIS_URL: str = "redis://localhost:6379/0"
     CACHE_TTL: int = 3600
+    CACHE_TTL_SECONDS: int = 3600  # Default TTL for insight cache
     
     # LLM Configuration
     LLM_PROVIDER: str = "openai"  # openai or anthropic
@@ -53,7 +57,7 @@ class Settings(BaseSettings):
     CELERY_RESULT_BACKEND: str = "redis://localhost:6379/2"
     
     # CORS
-    CORS_ORIGINS: List[str] = Field(default_factory=lambda: ["http://localhost:3000"])
+    CORS_ORIGINS: str = "http://localhost:3000"
     CORS_ALLOW_CREDENTIALS: bool = True
     
     # Rate Limiting
@@ -61,7 +65,7 @@ class Settings(BaseSettings):
     
     # File Upload
     MAX_UPLOAD_SIZE_MB: int = 50
-    ALLOWED_FILE_TYPES: List[str] = Field(default_factory=lambda: ["csv", "xlsx", "xls"])
+    ALLOWED_FILE_TYPES: str = "csv,xlsx,xls"
     
     # Logging
     LOG_LEVEL: str = "INFO"
@@ -80,19 +84,20 @@ class Settings(BaseSettings):
     AWS_S3_BUCKET: Optional[str] = None
     AWS_REGION: str = "us-east-1"
     
-    @validator("CORS_ORIGINS", pre=True)
-    def parse_cors_origins(cls, v):
-        """Parse CORS origins from comma-separated string or list."""
-        if isinstance(v, str):
-            return [origin.strip() for origin in v.split(",")]
-        return v
+    @property
+    def cors_origins_list(self) -> List[str]:
+        """Get CORS origins as a list."""
+        return [origin.strip() for origin in self.CORS_ORIGINS.split(",")]
+
+    @property
+    def BACKEND_CORS_ORIGINS(self) -> List[str]:
+        """Alias for cors_origins_list to match main.py usage."""
+        return self.cors_origins_list
     
-    @validator("ALLOWED_FILE_TYPES", pre=True)
-    def parse_allowed_file_types(cls, v):
-        """Parse allowed file types from comma-separated string or list."""
-        if isinstance(v, str):
-            return [ft.strip() for ft in v.split(",")]
-        return v
+    @property
+    def allowed_file_types_list(self) -> List[str]:
+        """Get allowed file types as a list."""
+        return [ft.strip() for ft in self.ALLOWED_FILE_TYPES.split(",")]
     
     class Config:
         env_file = ".env"
