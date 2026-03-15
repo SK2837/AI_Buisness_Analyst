@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, BarChart2, FileText, Bell, Settings, LogOut, CalendarDays, RefreshCw } from 'lucide-react';
+import { LayoutDashboard, BarChart2, FileText, Settings, LogOut, CalendarDays, RefreshCw } from 'lucide-react';
 
 const Layout = ({ children }) => {
     const location = useLocation();
@@ -9,7 +9,6 @@ const Layout = ({ children }) => {
         { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
         { path: '/analysis', icon: BarChart2, label: 'Analysis' },
         { path: '/reports', icon: FileText, label: 'Reports' },
-        { path: '/alerts', icon: Bell, label: 'Alerts' },
     ];
 
     return (

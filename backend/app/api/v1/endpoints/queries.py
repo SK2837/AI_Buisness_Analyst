@@ -28,7 +28,7 @@ narrative_generator = NarrativeGenerator()
 class QueryRequest(BaseModel):
     natural_language_query: str
     data_source_id: str
-    user_id: str = "00000000-0000-0000-0000-000000000000"  # Placeholder until auth is fully integrated
+    user_id: str = "3800df94-9c78-4bbc-b4a1-e8abae649bec"  # Admin user
 
 class QueryResponse(BaseModel):
     query_id: str

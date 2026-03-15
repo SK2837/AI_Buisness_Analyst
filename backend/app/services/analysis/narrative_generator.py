@@ -29,7 +29,7 @@ class NarrativeGenerator:
         """
         # Prepare data preview (limit rows to avoid token limits)
         row_limit = 10
-        data_preview = df.head(row_limit).to_markdown(index=False)
+        data_preview = df.head(row_limit).to_string(index=False)
         
         # Format analysis results as string
         analysis_str = json.dumps(analysis_results, indent=2, default=str)

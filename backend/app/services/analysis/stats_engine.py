@@ -157,13 +157,17 @@ class StatsEngine:
             if series.empty:
                 continue
                 
+            def safe_float(v):
+                f = float(v)
+                return None if (f != f) else f  # NaN check
+
             stats_dict[col] = {
-                "mean": float(series.mean()),
-                "median": float(series.median()),
-                "min": float(series.min()),
-                "max": float(series.max()),
-                "std_dev": float(series.std()),
-                "sum": float(series.sum()),
+                "mean": safe_float(series.mean()),
+                "median": safe_float(series.median()),
+                "min": safe_float(series.min()),
+                "max": safe_float(series.max()),
+                "std_dev": safe_float(series.std()),
+                "sum": safe_float(series.sum()),
                 "count": int(series.count())
             }
             

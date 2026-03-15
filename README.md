@@ -1,18 +1,41 @@
-# 🤖 AI Business Analyst
+# 🤖 AI Business Analyst — Insight Atlas
 
-An AI-powered virtual business analyst that transforms raw data into actionable insights through natural language interactions.
+An AI-powered virtual business analyst that transforms raw data into actionable insights through natural language interactions. Built on the Brazilian E-Commerce (Olist) dataset.
+
+## 📸 Screenshots
+
+### Dashboard — Live KPIs from Real Data
+![Dashboard](screenshots/dashboard.png)
+
+> The Dashboard pulls live metrics directly from PostgreSQL. It displays **Order Pulse** (total orders, AOV, revenue, cancellation rate for the last 30 days of the dataset), **Delivery Reliability** (on-time %, avg shipping days, late order %), **Order Status Breakdown** (delivered, shipped, canceled, etc.), and **Highlights** (top revenue category, avg review score, active sellers). All numbers are computed in real time — no hardcoded values.
+
+---
+
+### Analysis — Natural Language to SQL to Insights
+![Analysis](screenshots/analysis.png)
+
+> The Analysis console is the core AI feature. Type any business question in plain English — the backend uses **GPT-4 to extract intent and entities**, generates **schema-aware SQL**, executes it against the Olist PostgreSQL database, runs **statistical analysis**, and returns an **AI-generated narrative** with key points and raw results. No SQL knowledge required.
+
+---
+
+### Reports — Prebuilt Live Reports
+![Reports](screenshots/reports.png)
+
+> The Reports Library contains 5 prebuilt reports that query live Olist data on demand: **Revenue by Product Category**, **Order Status Summary**, **Delivery Performance by State**, **Top 20 Sellers by Revenue**, and **Monthly Order Volume**. Each report opens as a formatted HTML table generated directly from the database.
+
+---
 
 ## 📋 Overview
 
-This tool enables executives, managers, and business stakeholders to query business data conversationally and receive comprehensive reports with visualizations and narratives—no SQL or data science expertise required.
+This tool enables executives, managers, and business stakeholders to query business data conversationally and receive comprehensive reports with visualizations and narratives — no SQL or data science expertise required.
 
 **Key Features:**
-- 💬 Natural language query interface
-- 📊 Automatic chart generation
+- 💬 Natural language query interface (GPT-4 powered)
+- 📊 Real KPI dashboard from live data
 - 📝 AI-generated narrative reports
-- 🔔 Proactive insights and alerts
-- 🔗 Multi-source data integration
-- 📅 Scheduled report generation
+- 🔗 Multi-source data integration (PostgreSQL, CSV, APIs)
+- 📅 Prebuilt and on-demand report generation
+- 🔒 Encrypted data source credentials
 
 ## 🏗️ Architecture
 
