@@ -275,14 +275,4 @@ POST /api/v1/alerts/
 
 This is currently a development project. Contribution guidelines will be added once the MVP is complete.
 
-## 📝 License
 
-TBD
-
-## 📧 Contact
-
-For questions or feedback, please open an issue.
-
----
-
-**Built with ❤️ using AI-powered development**
